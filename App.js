@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, ScrollView } from 'react-native'
 import React from 'react'
+import ButtonComponent from './component/button/button.js'
 
 const App = () => {
   return (
@@ -22,7 +23,7 @@ const App = () => {
       justifyContent: 'row',
       alignContent:'center',
       alignItems: 'center',
-      padding:20,
+      padding:50,
        }}>
         <Image source={require('./assets/comely.png')}
         style={{
@@ -54,7 +55,7 @@ const App = () => {
           color: 'white',
           fontSize: 18,
           textAlign: 'center',
-          marginTop: 20,
+          marginTop: 30,
         }}>
           harga sesuai dengan tingkat kesulitan pembuatan, ukuran frame dan ukuran buket.
         </Text>
@@ -62,40 +63,11 @@ const App = () => {
           flexDirection: 'row',
           justifyContent: 'center',
           alignItems: 'center',
-          marginBottom: 50,
-        }}></View>
-          <View style= {{
-            marginHorizontal: 10
-          }}>
-          <Text style={{
-            width: 100,
-            height: 50,
-            color: 'white',
-            backgroundColor: 'tan',
-            textAlign: 'center',
-            lineHeight: 50,
-            fontSize: 17,
-            borderRadius: 10,
-          }}>
-            Login
-            </Text>
-  
-            <View style={{
-              marginHorizontal: 1
-            }}>
-            <Text style={{
-              width: 100,
-              height: 50,
-              color: 'white',
-              backgroundColor: 'sienna',
-              textAlign: 'center',
-              lineHeight: 50,
-              fontSize: 17,
-              borderRadius: 10,
-            }}>
-              Register
-            </Text>
-          </View>
+          marginTop: 50,
+          marginBottom: 70,
+        }}>
+          <ButtonComponent title= "Sign In" color= "tan" />
+          <ButtonComponent title= "Sign Up" color= "sienna" />
         </View>
        </ScrollView>
      </View>
