@@ -20,6 +20,7 @@ const Inputan = ({name, color}) =>{
             textAlignVertical: 'top',
             textAlign: 'left'
         }}
+        secureTextEntry = {name === 'Password'}
         />
     )
 }

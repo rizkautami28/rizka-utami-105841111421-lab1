@@ -1,6 +1,7 @@
 import { View } from 'react-native'
 import React from 'react'
-import SignUp from './component/pages/SignUp'
+import Login from './component/pages/login'
+
 
 const App = () => {
   return (
@@ -8,9 +9,10 @@ const App = () => {
       flex: 1,
       backgroundColor: '#EEEEEE'
     }}>
-      <SignUp/>
+      <Login />
     </View>
-  )
+  );
 }
 
-export default App
+export default App;
+
