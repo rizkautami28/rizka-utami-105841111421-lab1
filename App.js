@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { View, Text, Button, TextInput, StyleSheet } from 'react-native';
+import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
 
 const App = () => {
-  const [formLogin, setForm] = React.useState({
+  const [formLogin, setForm] = useState({
     email: '',
     password: ''
   });
@@ -14,14 +14,14 @@ const App = () => {
         <Text>Email</Text>
         <TextInput
           style={styles.input}
-          onChangeText={(email) => setForm({ ...formLogin, email })}
+          onChangeText={(hasil) => setForm({ ...formLogin, email: hasil })}
           value={formLogin.email}
         />
         <Text>Password</Text>
         <TextInput
           style={styles.input}
           secureTextEntry
-          onChangeText={(password) => setForm({ ...formLogin, password })}
+          onChangeText={(text) => setForm({ ...formLogin, password: text })}
           value={formLogin.password}
         />
         <View style={styles.buttonContainer}>
@@ -34,7 +34,7 @@ const App = () => {
       </View>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -50,6 +50,7 @@ const styles = StyleSheet.create({
   },
   input: {
     height: 40,
+    width: '100%',
     borderColor: 'gray',
     borderWidth: 1,
     borderRadius: 8,
