@@ -11,63 +11,53 @@ const Login = () => {
             paddingHorizontal: 30,
             paddingTop: 100,
         }}>
-            <TouchableOpacity style={{
-                position: 'absolute',
-                top: 60,
-                left: 20,
-            }}>
-                <Image
-                    source={require('../../assets/back.jpg')}
-                    style={{ width: 30, height: 30 }}
-                />
-            </TouchableOpacity>
-            
-            <View style={{
-                marginBottom: 60,
-                marginTop: 40
-            }}>
-                <Text style={{
-                    fontSize: 24,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                }}>
-                    Login
-                </Text>
-            </View>
+        <View style = {{
+            marginBottom: 60
+        }}>
+        <Text style = {{
+                fontWeight: 'bold',
+                fontSize: 50
+        }}>
+            Login
+        </Text>
+        </View> 
+        
+        <View style = {{
+            marginBottom: 10
 
-            <View style={{
-                marginBottom: 10
-            }}>
-                <Inputan name="Email" color="black" />
-                <Inputan name="Password" color="black" />
-            </View>    
+        }}>
+            <Inputan name= "Email" color="black" />
+            <Inputan name= "Password" color= "black" />
 
-            <Text style={{
+        <TouchableOpacity onPress = { () => Navigation.navigate('ForgotPassword')}>
+           <Text style = {{
+            fontSize: 14,
+            color: 'black',
+            marginTop: 5,
+            marginBottom: 50,
+            textAlign: 'right'
+           }}>
+            Forgot Your Password?
+           </Text>
+            </TouchableOpacity>    
+
+        </View>
+            <ButtonComponent title= "Login" color= "red" />
+             <Text style = {{
                 fontSize: 14,
                 color: 'black',
-                marginTop: 5,
-                marginBottom: 50,
-                textAlign: 'right'
-            }}>
-                Forgot You Password?
-            </Text>
-    
-            <ButtonComponent title="LOGIN" color="red"  />
-
-            <Text style={{
-                fontSize: 14,
-                color: 'black',
+                textAlign: 'center',
                 marginTop: 90,
-                marginBottom: 20,
-                textAlign: 'center'
-            }}>
-                or Login with social account
-            </Text>
-                
-            <View style={{
-                flexDirection: 'row',
-                justifyContent: 'center'
-            }}>
+                marginBottom: 20
+             }}>
+                Or login with social account
+             </Text>
+
+             <View style = {{
+                backgroundColor: 'row',
+                justifyContent: 'center',
+             }}>
+          
                 <TouchableOpacity style={{
                     backgroundColor: 'white',
                     justifyContent: 'center',
@@ -89,6 +79,7 @@ const Login = () => {
                     alignItems: 'center',
                     borderRadius: 10,
                     width: 92,
+                    height: 64,
                     marginHorizontal: 10,
                 }}>
                     <Image

@@ -3,7 +3,7 @@ import React from 'react';
 import ButtonComponent from '../button/button';
 import Inputan from '../TextInput/input';
 
-const ForgotPassword= () => {
+const ForgotPassword= ({navigation}) => {
     return (
         <View style= {{
             flex: 1,
@@ -16,14 +16,13 @@ const ForgotPassword= () => {
                 top: 60,
                 left: 20,
             }}>
-                <Image
-                    source = {require('../../assets/back.jpg')}
-                    style = {{ width: 30, height: 30 }}
-                    />
+               
                 </TouchableOpacity>
                 <View style = {{
-                    marginBottom: 100,
-                    marginTop: 10
+                    position: 'absolute',
+                    top: 60,
+                    left: 20
+                
                 }}>
                 <Text style = {{
                     fontWeight: 'bold',

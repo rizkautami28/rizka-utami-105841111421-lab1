@@ -17,7 +17,8 @@ const ButtonComponent = ({ title, color}) =>  {
             lineHeight: 60,
             fontSize: 20,
             borderRadius: 50,
-            }}>{title}</Text> 
+            }}>{title}
+            </Text> 
         </View> 
     )
 }

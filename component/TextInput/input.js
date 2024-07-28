@@ -7,7 +7,7 @@ const Inputan = ({name, color}) =>{
         placeholderTextColor = {'rgba (0, 0, 0, 0.5)'}
         style = {{
             borderWidth: 1,
-            borderColor: 'gray',
+            borderColor: 'transparent',
             borderRadius: 5,
             width: 350,
             height: 60,
