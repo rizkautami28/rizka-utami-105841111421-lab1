@@ -1,68 +1,221 @@
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import { StyleSheet, Text, View, ActivityIndicator, ScrollView, Button, TextInput } from 'react-native';
+import React, { useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 
-const App = () => {
-  const [formLogin, setForm] = useState({
-    email: '',
-    password: ''
-  });
+const Api = () => {
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [singlePost, setSinglePost] = useState(null);
+  const [postId, setPostId] = useState('');
+  const [newPost, setNewPost] = useState({ title: '', body: '', userId: 1 });
+  const [updatePost, setUpdatePost] = useState({ id: '', title: '', body: '' });
+  const [numPosts, setNumPosts] = useState('10');
+
+  useEffect(() => {
+    fetchData();
+  }, [numPosts]);
+
+  const fetchData = useCallback(() => {
+    setLoading(true);
+    axios.get(`https://jsonplaceholder.typicode.com/posts?_limit=${numPosts}`)
+      .then((response) => {
+        setData(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [numPosts]);
+
+  const getPostById = useCallback(() => {
+    if (postId) {
+      axios.get(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+        .then(response => setSinglePost(response.data))
+        .catch(error => console.error(error));
+    }
+  }, [postId]);
+
+  const addPost = useCallback(() => {
+    if (newPost.title && newPost.body) {
+      axios.post('https://jsonplaceholder.typicode.com/posts', newPost)
+        .then(response => {
+          setData([...data, response.data]);
+          setNewPost({ title: '', body: '', userId: 1 });
+        })
+        .catch(error => console.error(error));
+    }
+  }, [newPost, data]);
+
+  const deletePost = useCallback((id) => {
+    axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`)
+      .then(() => setData(data.filter(post => post.id !== id)))
+      .catch(error => console.error(error));
+  }, [data]);
+
+  const updateExistingPost = useCallback(() => {
+    if (updatePost.id && updatePost.title && updatePost.body) {
+      axios.put(`https://jsonplaceholder.typicode.com/posts/${updatePost.id}`, updatePost)
+        .then(response => {
+          setData(data.map(post => (post.id === response.data.id ? response.data : post)));
+          setUpdatePost({ id: '', title: '', body: '' });
+        })
+        .catch(error => console.error(error));
+    }
+  }, [updatePost, data]);
+
+  if (loading) {
+    return (
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
 
   return (
-    <View style={styles.container}>
-      <Text>Form Login</Text>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.form}>
-        <Text>Email</Text>
+        <Text>Select Number of Posts to Fetch:</Text>
         <TextInput
           style={styles.input}
-          onChangeText={(hasil) => setForm({ ...formLogin, email: hasil })}
-          value={formLogin.email}
+          placeholder="Enter number of posts"
+          value={numPosts}
+          keyboardType="numeric"
+          onChangeText={(value) => setNumPosts(value)}
         />
-        <Text>Password</Text>
-        <TextInput
-          style={styles.input}
-          secureTextEntry
-          onChangeText={(text) => setForm({ ...formLogin, password: text })}
-          value={formLogin.password}
-        />
-        <View style={styles.buttonContainer}>
-          <Button title="Login" onPress={() => alert('Login')} />
-        </View>
-        <View style={styles.displayInfo}>
-          <Text>Email: {formLogin.email}</Text>
-          <Text>Password: {formLogin.password}</Text>
-        </View>
+        <Button title="Fetch Posts" onPress={fetchData} />
       </View>
-    </View>
+
+      {data.map((post) => (
+        <View key={post.id} style={styles.postBox}>
+          <Text style={styles.title}>Title: {post.title}</Text>
+          <Text style={styles.body}>Body: {post.body}</Text>
+          <Text style={styles.userId}>User ID: {post.userId}</Text>
+          <Button title="Delete" onPress={() => deletePost(post.id)} />
+        </View>
+      ))}
+
+      <View style={styles.form}>
+        <Text>Get Post By ID:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Post ID"
+          value={postId}
+          onChangeText={setPostId}
+        />
+        <Button title="Get Post" onPress={getPostById} />
+        {singlePost && (
+          <View style={styles.postBox}>
+            <Text style={styles.title}>Title: {singlePost.title}</Text>
+            <Text style={styles.body}>Body: {singlePost.body}</Text>
+            <Text style={styles.userId}>User ID: {singlePost.userId}</Text>
+          </View>
+        )}
+      </View>
+
+      <View style={styles.form}>
+        <Text>Add New Post:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          value={newPost.title}
+          onChangeText={(value) => setNewPost({ ...newPost, title: value })}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Body"
+          value={newPost.body}
+          onChangeText={(value) => setNewPost({ ...newPost, body: value })}
+        />
+        <Button title="Add Post" onPress={addPost} />
+      </View>
+
+      <View style={styles.form}>
+        <Text>Update Post:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Post ID"
+          value={updatePost.id}
+          onChangeText={(value) => setUpdatePost({ ...updatePost, id: value })}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Title"
+          value={updatePost.title}
+          onChangeText={(value) => setUpdatePost({ ...updatePost, title: value })}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Body"
+          value={updatePost.body}
+          onChangeText={(value) => setUpdatePost({ ...updatePost, body: value })}
+        />
+        <Button title="Update Post" onPress={updateExistingPost} />
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 16,
+    padding: 10,
     backgroundColor: '#f5f5f5',
   },
+  postBox: {
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 15,
+    marginBottom: 10,
+    backgroundColor: '#fff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
+  },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#333',
+  },
+  body: {
+    fontSize: 14,
+    marginBottom: 5,
+    color: '#666',
+  },
+  userId: {
+    fontSize: 12,
+    color: '#999',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   form: {
-    width: '100%',
-    maxWidth: 300,
+    marginVertical: 20,
+    padding: 10,
+    backgroundColor: '#fff',
+    borderRadius: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   input: {
     height: 40,
-    width: '100%',
-    borderColor: 'gray',
+    borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,
     paddingHorizontal: 10,
-  },
-  buttonContainer: {
-    marginTop: 10,
-  },
-  displayInfo: {
-    marginTop: 20,
+    fontSize: 16,
+    color: '#333',
   },
 });
 
-export default App;
+export default Api;
